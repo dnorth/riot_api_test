@@ -9,4 +9,89 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/enterChampNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/champion_name" />
+
+        <EditText
+            android:id="@+id/champNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" 
+            android:inputType="text"
+            android:layout_weight="1">
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/enterChampNameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_champion_name" />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/egg_shell">
+
+        <TextView
+            android:id="@+id/champNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/champion_name_list"
+            android:textColor="@color/black"
+            android:textSize="@dimen/champion_list_text_size" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/egg_shell" >
+
+        <ScrollView
+            android:id="@+id/champScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:padding="5dp" >
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:stretchColumns="yes" >
+            </TableLayout>
+        </ScrollView>
+
+    </TableRow>
+    
+     <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+         <Button
+             android:id="@+id/deleteButton"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/delete_all_champions" 
+             android:layout_span="2"
+             android:layout_weight="1"/>
+        
+     </TableRow>
+
 </TableLayout>

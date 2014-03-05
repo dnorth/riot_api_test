@@ -3,7 +3,6 @@
 
     <string name="app_name">Riot API Test</string>
     <string name="action_settings">Settings</string>
-    
     <string name="champion_name">Enter Champion Name</string>
     <string name="enter_champion_name">Enter</string>
     <string name="champion_name_list">Champion Names and Info</string>
@@ -23,6 +22,6 @@
     <string name="champion_difficultyRank">Difficulty Rank:</string>
     <string name="champion_magicRank">Magic Rank:</string>
     <string name="champion_freeToPlay">Free To Play?</string>
-    
+    <string name="title_activity_champ_info">ChampInfo</string>
 
 </resources>
