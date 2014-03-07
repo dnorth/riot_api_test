@@ -44,6 +44,8 @@
         android:layout_height="wrap_content"
         android:background="@color/egg_shell">
 
+        
+        
         <TextView
             android:id="@+id/champNameTextView"
             android:layout_width="match_parent"

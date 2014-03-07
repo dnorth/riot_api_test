@@ -81,7 +81,8 @@ public class MainActivity extends Activity {
 		
 		View newChampRow = inflater.inflate(R.layout.champ_info_row, null);
 		
-		TextView newChampTextView = (TextView) newChampRow.findViewById(R.id.champNameTextView);
+		View tmp = newChampRow.findViewById(R.id.championNameTextView);
+		TextView newChampTextView = (TextView) tmp;
 		
 		newChampTextView.setText(champ);
 		
@@ -174,7 +175,7 @@ public class MainActivity extends Activity {
 			TableRow tableRow = (TableRow) v.getParent();
 			
 			//ChampName or Champion Name?
-			TextView champNameTextView = (TextView) tableRow.findViewById(R.id.champNameTextView);
+			TextView champNameTextView = (TextView) tableRow.findViewById(R.id.championNameTextView);
 			
 			String champName = champNameTextView.getText().toString();
 			

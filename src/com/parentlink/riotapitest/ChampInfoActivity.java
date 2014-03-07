@@ -57,10 +57,10 @@ public class ChampInfoActivity extends Activity{
 		setContentView(R.layout.activity_champ_info);
 		
 		Intent intent = getIntent();
-		String champName = intent.getStringExtra(MainActivity.CHAMPION_NAME);
-		compareName= champName;
+		compareName = intent.getStringExtra(MainActivity.CHAMPION_NAME).replace(" ", "").toUpperCase();
+		Log.v("my compare name: ", compareName);
 		
-		championNameActivityTextView = (TextView) findViewById(R.id.champNameTextView);
+		championNameActivityTextView = (TextView) findViewById(R.id.championNameTextView);
 		champAttackTextView = (TextView) findViewById(R.id.champAttackTextView);
 		champDefenseTextView = (TextView) findViewById(R.id.champDefenseTextView);
 		champDifficultyTextView = (TextView) findViewById(R.id.ChampDifficultyTextView);
@@ -121,7 +121,11 @@ public class ChampInfoActivity extends Activity{
 				
 				JSONObject jsonArray;
 				List<String> allChamps = new ArrayList<String>();
-				Log.v("RESULT:  ", result);
+				List<String> allAtt = new ArrayList<String>();
+				List<String> allDef = new ArrayList<String>();
+				List<String> allMag = new ArrayList<String>();
+				List<String> allDiff = new ArrayList<String>();
+				List<String> allFree = new ArrayList<String>();
 				try{
 					
 					//Log.v("JSONParser RESULT", result);
@@ -133,18 +137,50 @@ public class ChampInfoActivity extends Activity{
 					for(int i=0; i < champions.length(); i++)
 					{
 						JSONObject champ = champions.getJSONObject(i);
-						String champion = champ.getString("name");
+						String champion = champ.getString("name").toUpperCase();
+						String att = champ.getString("attackRank").toUpperCase();
+						String def = champ.getString("defenseRank").toUpperCase();
+						String mag = champ.getString("magicRank").toUpperCase();
+						String diff = champ.getString("difficultyRank").toUpperCase();
+						String free = champ.getString("freeToPlay").toUpperCase();
+						Log.v("Champ Names: ", champion);
 						allChamps.add(champion);
+						allAtt.add(att);
+						allDef.add(def);
+						allMag.add(mag);
+						allDiff.add(diff);
+						allFree.add(free);
 					}
 					
-					for(int i=0; i < allChamps.size(); i++)
-					{
-						if (compareName == allChamps.get(i))
+						if (allChamps.contains(compareName))
 						{
-							championNameActivity= allChamps.get(i); 
+							Log.v("I'm in!!! ", compareName);
+							championNameActivity= compareName; 
+							champAttack= allAtt.get(allChamps.indexOf(compareName));
+							champDefense= allDef.get(allChamps.indexOf(compareName));
+							champMagic= allMag.get(allChamps.indexOf(compareName));
+							champDifficulty= allDiff.get(allChamps.indexOf(compareName));
+							freeToPlay= allFree.get(allChamps.indexOf(compareName));
+							
+							Log.v("free to play message: ", freeToPlay);
+							if (freeToPlay.equals("FALSE"))
+							{
+								freeToPlay = "No";
+							}
+							else if (freeToPlay.equals("TRUE"))
+							{
+								freeToPlay = "Yes";
+							}
+							else
+							{
+								freeToPlay = "MERP";
+							}
+
 						}
-						
-					}
+						else
+						{
+							championNameActivity= "NOPE";
+						}
 					
 				}
 				catch(JSONException e){
@@ -161,6 +197,11 @@ public class ChampInfoActivity extends Activity{
 		protected void onPostExecute(String result){
 			
 			championNameActivityTextView.setText("Champion: " + championNameActivity);
+			champAttackTextView.setText("Attack Rank: " + champAttack);
+			champMagicTextView.setText("Magic Rank: " + champMagic);
+			champDefenseTextView.setText("Defense Rank: " + champDefense);
+			champDifficultyTextView.setText("Difficulty Rank: " + champDifficulty);
+			freeToPlayTextView.setText("Free To Play? " + freeToPlay);
 
 		}
 		
