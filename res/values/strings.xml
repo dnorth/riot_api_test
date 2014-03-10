@@ -23,5 +23,6 @@
     <string name="champion_magicRank">Magic Rank:</string>
     <string name="champion_freeToPlay">Free To Play?</string>
     <string name="title_activity_champ_info">ChampInfo</string>
+    <string name="delete_button">Delete</string>
 
 </resources>

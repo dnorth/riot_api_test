@@ -100,6 +100,10 @@ public class ChampInfoActivity extends Activity{
 					
 				}
 				result = theStringBuilder.toString();
+				if (result.equals(null))
+				{
+					
+				}
 			}
 			
 			catch(Exception e){
@@ -154,7 +158,6 @@ public class ChampInfoActivity extends Activity{
 					
 						if (allChamps.contains(compareName))
 						{
-							Log.v("I'm in!!! ", compareName);
 							championNameActivity= compareName; 
 							champAttack= allAtt.get(allChamps.indexOf(compareName));
 							champDefense= allDef.get(allChamps.indexOf(compareName));

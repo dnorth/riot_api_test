@@ -32,20 +32,21 @@ public final class R {
     public static final class id {
         public static final int ChampDifficultyTextView=0x7f090008;
         public static final int TableLayout1=0x7f090000;
-        public static final int action_settings=0x7f090013;
+        public static final int action_settings=0x7f090014;
         public static final int champAttackTextView=0x7f090004;
         public static final int champDefenseTextView=0x7f090005;
         public static final int champInfoButton=0x7f090011;
+        public static final int champListView=0x7f090010;
         public static final int champMagicTextView=0x7f090007;
-        public static final int champNameEditText=0x7f09000c;
+        public static final int champNameEditText=0x7f09000d;
         public static final int champNameTextView=0x7f09000e;
-        public static final int champScrollView=0x7f09000f;
         public static final int champWebButton=0x7f090012;
         public static final int championNameTextView=0x7f090002;
-        public static final int deleteButton=0x7f090010;
-        public static final int enterChampNameButton=0x7f09000d;
-        public static final int enterChampNameTextView=0x7f09000b;
+        public static final int deleteAllButton=0x7f09000f;
+        public static final int enterChampNameButton=0x7f09000b;
+        public static final int enterChampNameTextView=0x7f09000c;
         public static final int freeToPlayTextView=0x7f09000a;
+        public static final int individualChampDeleteButton=0x7f090013;
         public static final int tableRow1=0x7f090001;
         public static final int tableRow2=0x7f090003;
         public static final int tableRow3=0x7f090006;
@@ -76,6 +77,7 @@ public final class R {
         public static final int change_champion_name=0x7f060005;
         public static final int confirm_action=0x7f06000b;
         public static final int delete_all_champions=0x7f06000a;
+        public static final int delete_button=0x7f060016;
         public static final int enter_champion_name=0x7f060003;
         public static final int get_champion_info=0x7f06000c;
         public static final int go_to_website=0x7f06000d;

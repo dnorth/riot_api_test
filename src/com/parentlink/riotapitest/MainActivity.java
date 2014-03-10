@@ -1,6 +1,10 @@
 package com.parentlink.riotapitest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import android.net.Uri;
 import android.os.Build;
@@ -15,9 +19,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,12 +37,14 @@ public class MainActivity extends Activity {
 	
 	private SharedPreferences champNameEntered;
 	
-	private TableLayout champListScrollView;
+	private ListView champListView;
 	
 	private EditText champNameEditText;
 	
-	Button enterChampNameButton;
-	Button deleteButton;
+	private DallinIsAwesome dallin;
+	
+	private Button enterChampNameButton;
+	public Button deleteAllButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,60 +53,98 @@ public class MainActivity extends Activity {
 		
 		champNameEntered = getSharedPreferences("champList",MODE_PRIVATE);
 		
-		champListScrollView= (TableLayout) findViewById(R.id.champScrollView);
+		champListView= (ListView) findViewById(R.id.champListView);
 		
 		champNameEditText= (EditText) findViewById(R.id.champNameEditText);
 		
 		enterChampNameButton= (Button) findViewById(R.id.enterChampNameButton);
-		deleteButton= (Button) findViewById(R.id.deleteButton);
+		deleteAllButton= (Button) findViewById(R.id.deleteAllButton);
 		
 		enterChampNameButton.setOnClickListener(enterChampNameButtonListener);
-		deleteButton.setOnClickListener(deleteChampListButtonListener);
+		deleteAllButton.setOnClickListener(deleteChampListButtonListener);
 		
-		updateSavedChampList(null);
+		dallin = new DallinIsAwesome();
+		
+		champListView.setAdapter(dallin);
+		
+		dallin.narwhal.addAll(champNameEntered.getAll().keySet());
 	}
 	
-	private void updateSavedChampList(String newChampName){
-		
-		String[] champs = champNameEntered.getAll().keySet().toArray(new String[0]);
-		
-		Arrays.sort(champs, String.CASE_INSENSITIVE_ORDER);
-		
-		if (newChampName != null){
+	private class DallinIsAwesome extends BaseAdapter{
+
+			public List<String> narwhal;
 			
-			insertChampInScrollView(newChampName, Arrays.binarySearch(champs, newChampName));
-		}
-		else{
-			
-			for (int i= 0; i < champs.length; i++){
-				
-				insertChampInScrollView(champs[i],i);
+			public DallinIsAwesome() {
+				narwhal = new ArrayList<String>();
 			}
+			
+			@Override
+			public int getCount() {
+				
+				return narwhal.size();
+				
+			}
+
+			@Override
+			public Object getItem(int arg0) {
+				
+				return narwhal.get(arg0);
+			}
+
+			@Override
+			public long getItemId(int arg0) {
+				// TODO Auto-generated method stub
+				return getItem(arg0).hashCode();
+			}
+
+			@Override
+			public View getView(int arg0, View arg1, ViewGroup arg2) {
+				
+				if( arg1 == null)
+				{
+					LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					arg1 = inflater.inflate(R.layout.champ_info_row, null);
+					
+					Button dallinConfusesMe = (Button) arg1.findViewById(R.id.individualChampDeleteButton);
+					
+					dallinConfusesMe.setOnClickListener(new OnClickListener(){
+
+						@Override
+						public void onClick(View arg0) {
+							
+							View row = (View) arg0.getParent();
+							
+							int index= (Integer)row.getTag();
+							
+							String champName= narwhal.remove(index);
+							
+							champNameEntered.edit().remove(champName).commit();
+							
+							notifyDataSetChanged();
+						}
+						
+					});
+				}
+				
+				
+				
+				arg1.setTag(arg0);
+				
+				TextView newChampTextView = (TextView) arg1.findViewById(R.id.championNameTextView);
+				
+				newChampTextView.setText((String)getItem(arg0));
+				
+				Button champInfoButton = (Button) arg1.findViewById(R.id.champInfoButton);
+				
+				champInfoButton.setOnClickListener(getChampActivityListener);
+				
+				Button champWebButton = (Button) arg1.findViewById(R.id.champWebButton);
+				
+				champWebButton.setOnClickListener(getChampInfoFromWebsiteListener);
+				return arg1;
+			}
+			
 		}
-	}
-	
-	private void insertChampInScrollView(String champ, int arrayIndex){
-		//Inflater allows champ names to be added to the scroll view dynamically
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
-		View newChampRow = inflater.inflate(R.layout.champ_info_row, null);
-		
-		View tmp = newChampRow.findViewById(R.id.championNameTextView);
-		TextView newChampTextView = (TextView) tmp;
-		
-		newChampTextView.setText(champ);
-		
-		Button champInfoButton = (Button) newChampRow.findViewById(R.id.champInfoButton);
-		
-		champInfoButton.setOnClickListener(getChampActivityListener);
-		
-		Button champWebButton = (Button) newChampRow.findViewById(R.id.champWebButton);
-		
-		champWebButton.setOnClickListener(getChampInfoFromWebsiteListener);
-		
-		champListScrollView.addView(newChampRow, arrayIndex);
-		
-	}
 
 	private void saveChampName(String newChamp){
 		
@@ -109,7 +157,10 @@ public class MainActivity extends Activity {
 		
 		if(isTheChampNew == null){
 			
-			updateSavedChampList(newChamp);
+			dallin.narwhal.add(newChamp);
+			Collections.sort(dallin.narwhal);
+			//updating the list
+			dallin.notifyDataSetChanged();
 		}
 	}
 	
@@ -164,7 +215,8 @@ public class MainActivity extends Activity {
 	
 	private void deleteAllChamps(){
 		
-		champListScrollView.removeAllViews();
+		dallin.narwhal.clear();
+		dallin.notifyDataSetChanged();
 	}
 	
 	public OnClickListener getChampActivityListener = new OnClickListener(){
@@ -172,12 +224,9 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			
-			TableRow tableRow = (TableRow) v.getParent();
+			View row = (View) v.getParent();
 			
-			//ChampName or Champion Name?
-			TextView champNameTextView = (TextView) tableRow.findViewById(R.id.championNameTextView);
-			
-			String champName = champNameTextView.getText().toString();
+			String champName = dallin.narwhal.get((Integer)row.getTag());
 			
 			Intent intent = new Intent(MainActivity.this, ChampInfoActivity.class);
 			
@@ -197,7 +246,7 @@ public class MainActivity extends Activity {
 			TableRow tableRow = (TableRow) v.getParent();
 			
 			//Finds the "champNameTextView" id that is also in the same table row
-			TextView champNameTextView = (TextView) tableRow.findViewById(R.id.champNameTextView);
+			TextView champNameTextView = (TextView) tableRow.findViewById(R.id.championNameTextView);
 			
 			//Then gets the text and saves it to a string
 			String champName = champNameTextView.getText().toString().replace(' ', '_');
